@@ -1,0 +1,196 @@
+/* ============================================================
+   Escena
+   ============================================================ */
+
+.stage {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--night-900);
+  background-image:
+    radial-gradient(58% 42% at 18% 14%, rgba(242, 107, 140, 0.16) 0%, transparent 62%),
+    radial-gradient(52% 40% at 84% 20%, rgba(126, 224, 210, 0.13) 0%, transparent 64%),
+    radial-gradient(70% 50% at 50% 96%, rgba(255, 171, 139, 0.13) 0%, transparent 66%),
+    radial-gradient(130% 90% at 50% 24%, #2b1730 0%, #1c0f22 44%, #120a15 100%);
+}
+
+/* Luz cálida ambiental que crece al abrir el regalo */
+.stage__warm {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    58% 44% at 50% 40%,
+    rgba(255, 186, 130, 0.26) 0%,
+    rgba(230, 132, 110, 0.1) 46%,
+    transparent 74%
+  );
+  opacity: 0;
+  transition: opacity 1500ms var(--ease-out-soft);
+}
+
+app-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 1000ms var(--ease-out-soft);
+}
+
+.stage--letter app-particles {
+  opacity: 0.38;
+}
+
+/* ============================================================
+   Pantalla inicial
+   ============================================================ */
+
+.intro,
+.reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 5vh, 3rem) 1.25rem;
+  text-align: center;
+}
+
+.intro__dedication {
+  margin-top: clamp(1.5rem, 4.5vh, 2.5rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 5.6vw, 2rem);
+  font-weight: 400;
+  letter-spacing: 0.055em;
+  color: var(--warm-white);
+  text-shadow: 0 0 30px rgba(255, 179, 190, 0.22);
+  transition: opacity 620ms var(--ease-out-soft), transform 620ms var(--ease-out-soft);
+}
+
+.open {
+  margin-top: clamp(1.75rem, 4.5vh, 2.6rem);
+  padding: 1.05rem 2.15rem;
+  border: 1px solid rgba(255, 190, 205, 0.3);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(255, 214, 224, 0.07) 0%, rgba(255, 214, 224, 0) 100%);
+  color: var(--rose-300);
+  font-size: 0.71rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    opacity 620ms var(--ease-out-soft),
+    transform 620ms var(--ease-out-soft),
+    color 520ms var(--ease-out-soft),
+    border-color 520ms var(--ease-out-soft),
+    box-shadow 520ms var(--ease-out-soft);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .open:hover {
+    color: var(--cream-100);
+    border-color: rgba(255, 205, 218, 0.62);
+    box-shadow:
+      0 0 36px -8px rgba(242, 107, 140, 0.42),
+      inset 0 0 24px -12px rgba(255, 214, 224, 0.4);
+  }
+}
+
+.open:active {
+  transform: scale(0.982);
+}
+
+/* Salida suave al empezar la apertura */
+.intro--out .intro__dedication,
+.intro--out .open {
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+}
+
+/* ============================================================
+   Antes de la carta
+   ============================================================ */
+
+.reveal {
+  z-index: 2;
+  gap: clamp(1.25rem, 4vh, 1.9rem);
+  pointer-events: none;
+  transition: opacity 700ms var(--ease-out-soft), transform 700ms var(--ease-out-soft);
+}
+
+.reveal--out {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+.reveal__dedication {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  color: var(--cream-100);
+  text-shadow: 0 0 44px rgba(255, 175, 190, 0.32);
+  animation: reveal-in 1400ms var(--ease-out-soft) both;
+}
+
+.reveal__prelude {
+  max-width: 24rem;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 3.6vw, 1.2rem);
+  font-style: italic;
+  line-height: 1.7;
+  letter-spacing: 0.015em;
+  color: rgba(250, 236, 232, 0.78);
+  animation: reveal-in 1400ms 240ms var(--ease-out-soft) both;
+}
+
+@keyframes reveal-in {
+  0% {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(18px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   Carta
+   ============================================================ */
+
+app-letter {
+  z-index: 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage__warm,
+  app-particles,
+  .reveal,
+  .intro__dedication,
+  .open {
+    transition-duration: 1ms;
+  }
+
+  .reveal__dedication,
+  .reveal__prelude {
+    animation: none;
+    opacity: 1;
+    filter: none;
+  }
+}

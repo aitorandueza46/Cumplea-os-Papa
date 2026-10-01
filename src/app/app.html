@@ -1,0 +1,30 @@
+<main class="stage" [class.stage--letter]="phase() === 'letter'">
+  <div class="stage__warm" [style.opacity]="warmth()" aria-hidden="true"></div>
+
+  <app-particles />
+
+  <p class="visually-hidden" role="status" aria-live="polite">{{ announcement() }}</p>
+
+  @if (phase() === 'intro' || phase() === 'opening') {
+    <section class="intro" [class.intro--out]="phase() === 'opening'">
+      <app-gift [opening]="phase() === 'opening'" />
+      <h1 class="intro__dedication">{{ dedication }}</h1>
+      <button class="open" type="button" aria-label="Abrir regalo" (click)="openGift()">
+        ABRIR REGALO
+      </button>
+    </section>
+  }
+
+  @if (phase() !== 'intro' && phase() !== 'opening') {
+    <section class="reveal" [class.reveal--out]="phase() === 'letter'">
+      <h1 class="reveal__dedication">{{ dedication }}</h1>
+      @if (phase() === 'prelude' || phase() === 'letter') {
+        <p class="reveal__prelude">{{ prelude }}</p>
+      }
+    </section>
+  }
+
+  @if (phase() === 'letter') {
+    <app-letter />
+  }
+</main>

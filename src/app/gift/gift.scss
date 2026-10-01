@@ -1,0 +1,779 @@
+/* ============================================================
+   Geometría
+   ============================================================ */
+
+$bw: 220px;
+$bh: 150px;
+$bd: 220px;
+
+$lw: 244px;
+$lh: 52px;
+$ld: 244px;
+
+$bw-half: $bw * 0.5;
+$bh-half: $bh * 0.5;
+$bd-half: $bd * 0.5;
+
+$lw-half: $lw * 0.5;
+$lh-half: $lh * 0.5;
+$ld-half: $ld * 0.5;
+
+$band: 34px;
+
+$lid-y: -($bh-half + $lh-half);
+$lid-hinge-y: $lh-half;
+$lid-hinge-z: -$ld-half;
+
+@mixin quad($w, $h) {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: $w;
+  height: $h;
+  margin-left: -$w * 0.5;
+  margin-top: -$h * 0.5;
+  backface-visibility: hidden;
+}
+
+/* Brillo de satén de la cinta, en horizontal y en vertical */
+@function sheen-x() {
+  @return linear-gradient(
+    90deg,
+    #8a5f2a 0%,
+    #b9883a 12%,
+    #e8c98d 30%,
+    #fdf3de 46%,
+    #f2dcae 54%,
+    #d9ac68 70%,
+    #a97733 88%,
+    #7a5624 100%
+  );
+}
+
+@function sheen-y() {
+  @return linear-gradient(
+    180deg,
+    #8a5f2a 0%,
+    #b9883a 12%,
+    #e8c98d 30%,
+    #fdf3de 46%,
+    #f2dcae 54%,
+    #d9ac68 70%,
+    #a97733 88%,
+    #7a5624 100%
+  );
+}
+
+/* ============================================================
+   Contenedor
+   ============================================================ */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.gift {
+  position: relative;
+  width: 340px;
+  height: 330px;
+  transform: scale(var(--gift-scale, 1));
+  transition: transform 700ms var(--ease-out-soft);
+}
+
+/* Halo cálido del entorno */
+.gift__glow {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 460px;
+  height: 460px;
+  margin: -230px 0 0 -230px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      closest-side circle at 50% 46%,
+      rgba(255, 190, 165, 0.32) 0%,
+      rgba(226, 122, 112, 0.17) 34%,
+      rgba(130, 62, 76, 0.08) 58%,
+      transparent 76%
+    );
+  opacity: 0.85;
+  animation: glow-breathe 8.5s var(--ease-in-out) infinite;
+  transition: opacity 900ms var(--ease-out-soft);
+}
+
+/* Sombra de contacto */
+.gift__floor {
+  position: absolute;
+  left: 50%;
+  top: 76%;
+  width: 320px;
+  height: 62px;
+  margin-left: -160px;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side ellipse at 50% 50%,
+    rgba(28, 4, 14, 0.8) 0%,
+    rgba(20, 3, 10, 0.34) 48%,
+    rgba(14, 2, 8, 0.08) 72%,
+    transparent 88%
+  );
+  animation: floor-breathe 8.5s var(--ease-in-out) infinite;
+  transition: opacity 700ms var(--ease-out-soft), transform 700ms var(--ease-out-soft);
+}
+
+/* ============================================================
+   Escena 3D
+   ============================================================ */
+
+.gift__stage {
+  position: absolute;
+  inset: 0;
+  perspective: 1150px;
+  perspective-origin: 50% 44%;
+  transition: transform 800ms var(--ease-out-soft);
+}
+
+.gift__rig {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(-13deg) rotateY(-20deg);
+  animation: rig-breathe 8.5s var(--ease-in-out) infinite;
+}
+
+.box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+/* ---------- Caras de la caja ---------- */
+
+.box__face {
+  border-radius: 2px;
+}
+
+.box__face--front {
+  @include quad($bw, $bh);
+  transform: translateZ($bd-half);
+  background-color: #6c1631;
+  background-image: sheen-x(), sheen-y(), linear-gradient(168deg, #9c2549 0%, #6c1631 46%, #470d20 100%);
+  background-size: 100% $band, $band 100%, 100% 100%;
+  background-position: 50% 50%, 50% 50%, 0 0;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 214, 208, 0.2),
+    inset 0 -18px 30px rgba(0, 0, 0, 0.5),
+    inset 0 14px 20px -10px rgba(40, 0, 12, 0.66);
+}
+
+.box__face--right {
+  @include quad($bd, $bh);
+  transform: rotateY(90deg) translateZ($bw-half);
+  background-color: #3d0a1c;
+  background-image: sheen-x(), linear-gradient(184deg, #5e1229 0%, #3d0a1c 52%, #2c0616 100%);
+  background-size: 100% $band, 100% 100%;
+  background-position: 50% 50%, 0 0;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 214, 208, 0.11),
+    inset 0 -16px 26px rgba(0, 0, 0, 0.55);
+}
+
+.box__face--left {
+  @include quad($bd, $bh);
+  transform: rotateY(-90deg) translateZ($bw-half);
+  background-color: #240514;
+  background-image: sheen-x(), linear-gradient(176deg, #4a0c1e 0%, #2c0616 100%);
+  background-size: 100% $band, 100% 100%;
+  background-position: 50% 50%, 0 0;
+  background-repeat: no-repeat;
+}
+
+.box__face--top {
+  @include quad($bw, $bd);
+  transform: rotateX(90deg) translateZ($bh-half);
+  background-color: #8c1f40;
+  background-image: sheen-x(), sheen-y(), linear-gradient(178deg, #b93159 0%, #8c1f40 44%, #6c1631 100%);
+  background-size: 100% $band, $band 100%, 100% 100%;
+  background-position: 50% 50%, 50% 50%, 0 0;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 40px rgba(40, 0, 12, 0.42);
+}
+
+/* ---------- Luz interior ---------- */
+
+.box__inner {
+  @include quad($bw, $bd);
+  transform: rotateX(90deg) translateZ($bh-half + 3px);
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 236, 194, 0.95) 0%,
+    rgba(247, 206, 137, 0.6) 26%,
+    rgba(206, 152, 76, 0.22) 52%,
+    transparent 74%
+  );
+  transition: opacity 400ms linear;
+}
+
+.box__inner-core {
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 249, 233, 1) 0%, rgba(255, 226, 168, 0.5) 44%, transparent 72%);
+}
+
+/* Columna de luz que sube del interior */
+.box__beam {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 250px;
+  height: 170px;
+  margin-left: -125px;
+  transform: translateY(-150px);
+  transform-origin: 50% 100%;
+  transform-style: flat;
+  opacity: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 232, 184, 0.5) 0%,
+    rgba(250, 210, 143, 0.22) 32%,
+    rgba(226, 176, 100, 0.07) 62%,
+    transparent 86%
+  );
+}
+
+/* ---------- Destellos que salen de la caja ---------- */
+
+.sparks {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform: translate3d(0, -$bh-half, 0);
+  transform-style: flat;
+}
+
+.spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 246, 226, 1) 0%,
+    rgba(255, 216, 152, 0.42) 46%,
+    transparent 74%
+  );
+  transform: translate3d(0, 0, 0) scale(0.3);
+}
+
+/* Destellos con un punto de color festivo, sin llegar a confeti */
+.spark:nth-child(3n + 2) {
+  background: radial-gradient(
+    circle,
+    rgba(255, 226, 234, 1) 0%,
+    rgba(255, 157, 181, 0.46) 46%,
+    transparent 74%
+  );
+}
+
+.spark:nth-child(3n + 3) {
+  background: radial-gradient(
+    circle,
+    rgba(226, 255, 250, 1) 0%,
+    rgba(126, 224, 210, 0.42) 46%,
+    transparent 74%
+  );
+}
+
+/* ============================================================
+   Tapa
+   ============================================================ */
+
+.lid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform-origin: 0 $lid-hinge-y $lid-hinge-z;
+  transform: translateY($lid-y);
+  transition: transform 900ms var(--ease-out-soft);
+}
+
+.lid__face {
+  border-radius: 3px;
+}
+
+.lid__face--front {
+  @include quad($lw, $lh);
+  transform: translateZ($ld-half);
+  background-color: #6c1631;
+  background-image: sheen-x(), sheen-y(), linear-gradient(170deg, #b93159 0%, #8c1f40 48%, #6c1631 100%);
+  background-size: 100% $band, $band 100%, 100% 100%;
+  background-position: 50% 50%, 50% 50%, 0 0;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 220, 214, 0.28),
+    inset 0 -14px 22px rgba(0, 0, 0, 0.44),
+    inset 0 12px 16px -8px rgba(40, 0, 12, 0.56);
+}
+
+.lid__face--right {
+  @include quad($ld, $lh);
+  transform: rotateY(90deg) translateZ($lw-half);
+  background-color: #3d0a1c;
+  background-image: sheen-x(), linear-gradient(186deg, #6c1631 0%, #4a0c1e 54%, #2c0616 100%);
+  background-size: 100% $band, 100% 100%;
+  background-position: 50% 50%, 0 0;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 1.5px 0 rgba(255, 220, 214, 0.15);
+}
+
+.lid__face--top {
+  @include quad($lw, $ld);
+  transform: rotateX(90deg) translateZ($lh-half);
+  background-color: #8c1f40;
+  background-image: sheen-x(), sheen-y(), linear-gradient(180deg, #cf3f68 0%, #a92a4e 46%, #7d1a38 100%);
+  background-size: 100% $band, $band 100%, 100% 100%;
+  background-position: 50% 50%, 50% 50%, 0 0;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 0 44px rgba(40, 0, 12, 0.34),
+    inset 0 2px 0 rgba(255, 224, 216, 0.16);
+}
+
+.lid__face--inside {
+  @include quad($lw, $ld);
+  transform: rotateX(-90deg) translateZ($lh-half);
+  background: linear-gradient(0deg, #f4d3c6 0%, #dba994 100%);
+  box-shadow: inset 0 0 30px rgba(90, 20, 40, 0.4);
+}
+
+/* ============================================================
+   Lazo
+   ============================================================ */
+
+.bow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform: translate3d(0, -$lh-half, 0);
+  transform-style: flat;
+}
+
+.bow__loop,
+.bow__flip,
+.bow__tail,
+.bow__knot {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.bow__loop {
+  width: 92px;
+  height: 54px;
+  border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
+  background: linear-gradient(
+    152deg,
+    #fdf6e6 0%,
+    #ecd296 18%,
+    #d2ab5c 44%,
+    #a37d33 72%,
+    #745722 100%
+  );
+  box-shadow:
+    inset 0 5px 8px rgba(255, 248, 232, 0.44),
+    inset 0 -8px 12px rgba(60, 36, 10, 0.4),
+    0 6px 14px rgba(40, 0, 12, 0.45);
+}
+
+.bow__loop::after {
+  content: '';
+  position: absolute;
+  inset: 26% 12% 16% 16%;
+  border-radius: 50%;
+  background: linear-gradient(160deg, rgba(96, 62, 24, 0.46) 0%, rgba(48, 28, 8, 0.7) 100%);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* El lazo derecho es el izquierdo reflejado: se voltea el contenedor,
+   así la simetría es exacta y no depende de cálculos. */
+.bow__flip {
+  transform: scaleX(-1);
+}
+
+.bow__loop--left,
+.bow__loop--right {
+  transform: translate(-88%, -44%) rotate(-15deg);
+  transform-origin: 92% 52%;
+}
+
+.bow__tail {
+  width: 20px;
+  height: 74px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+  background: linear-gradient(
+    100deg,
+    #f2dda6 0%,
+    #cfa85c 40%,
+    #9a7530 78%,
+    #6f5122 100%
+  );
+  box-shadow: inset 0 -6px 10px rgba(60, 36, 10, 0.34);
+}
+
+.bow__tail--left {
+  transform: translate(-100%, 10px) rotate(9deg);
+}
+
+.bow__tail--right {
+  transform: translate(0%, 10px) rotate(-9deg);
+}
+
+.bow__knot {
+  width: 38px;
+  height: 30px;
+  margin: -15px 0 0 -19px;
+  border-radius: 46% 54% 50% 50% / 56% 48% 52% 44%;
+  background: radial-gradient(
+    ellipse at 38% 30%,
+    #fffaf0 0%,
+    #f0dcaa 22%,
+    #cfa95e 52%,
+    #8a6728 100%
+  );
+  box-shadow:
+    inset 0 -3px 6px rgba(60, 36, 10, 0.32),
+    0 4px 10px rgba(40, 0, 12, 0.5);
+}
+
+/* ============================================================
+   Microinteracción
+   ============================================================ */
+
+@media (hover: hover) and (pointer: fine) {
+  .gift:hover .gift__stage {
+    transform: translateY(-7px) scale(1.03);
+  }
+}
+
+/* ============================================================
+   Animación de apertura
+   ============================================================ */
+
+.gift--opening .gift__glow {
+  animation: none;
+  opacity: 1;
+  transform: scale(1.28);
+}
+
+.gift--opening .gift__floor {
+  animation: none;
+  opacity: 0;
+  transform: scale(0.82);
+}
+
+.gift--opening .box__face,
+.gift--opening .box__inner {
+  animation: box-dissolve 900ms 780ms var(--ease-out-soft) forwards;
+}
+
+.gift--opening .box__inner {
+  animation:
+    box-dissolve 900ms 780ms var(--ease-out-soft) forwards,
+    inner-bloom 1150ms 520ms var(--ease-out-soft) forwards;
+}
+
+.gift--opening .box__beam {
+  animation: beam-rise 1000ms 820ms var(--ease-out-soft) forwards;
+}
+
+.gift--opening .lid {
+  animation: lid-open 1250ms 430ms cubic-bezier(0.32, 0, 0.12, 1) forwards;
+}
+
+.gift--opening .lid__face {
+  animation: lid-fade 620ms 1180ms var(--ease-out-soft) forwards;
+}
+
+.gift--opening .bow {
+  animation: bow-loosen 620ms 210ms var(--ease-out-soft) forwards;
+}
+
+.gift--opening .bow__loop--left,
+.gift--opening .bow__loop--right {
+  animation: bow-loop-open 640ms 210ms var(--ease-out-soft) forwards;
+}
+
+.gift--opening .bow__tail--left {
+  animation: bow-tail-left 640ms 210ms var(--ease-out-soft) forwards;
+}
+
+.gift--opening .bow__tail--right {
+  animation: bow-tail-right 640ms 210ms var(--ease-out-soft) forwards;
+}
+
+.gift--opening .bow__knot {
+  animation: bow-knot 700ms 210ms var(--ease-out-soft) forwards;
+}
+
+.gift--opening .spark {
+  animation: spark-rise 980ms var(--ease-out-soft) var(--spark-delay) forwards;
+}
+
+/* Trayectorias de los destellos: se repiten en espejo */
+.spark:nth-child(1) { --spark-delay: 700ms; --spark-x: -74px; --spark-y: -128px; }
+.spark:nth-child(2) { --spark-delay: 760ms; --spark-x: 66px; --spark-y: -146px; }
+.spark:nth-child(3) { --spark-delay: 690ms; --spark-x: -34px; --spark-y: -168px; }
+.spark:nth-child(4) { --spark-delay: 820ms; --spark-x: 92px; --spark-y: -104px; }
+.spark:nth-child(5) { --spark-delay: 740ms; --spark-x: -104px; --spark-y: -92px; }
+.spark:nth-child(6) { --spark-delay: 880ms; --spark-x: 40px; --spark-y: -118px; }
+.spark:nth-child(7) { --spark-delay: 720ms; --spark-x: -16px; --spark-y: -142px; }
+.spark:nth-child(8) { --spark-delay: 840ms; --spark-x: 78px; --spark-y: -158px; }
+.spark:nth-child(9) { --spark-delay: 790ms; --spark-x: -58px; --spark-y: -116px; }
+.spark:nth-child(10) { --spark-delay: 920ms; --spark-x: 24px; --spark-y: -86px; }
+.spark:nth-child(11) { --spark-delay: 730ms; --spark-x: -88px; --spark-y: -150px; }
+.spark:nth-child(12) { --spark-delay: 870ms; --spark-x: 56px; --spark-y: -132px; }
+.spark:nth-child(13) { --spark-delay: 810ms; --spark-x: -26px; --spark-y: -96px; }
+.spark:nth-child(14) { --spark-delay: 950ms; --spark-x: 84px; --spark-y: -172px; }
+
+/* ---------- Fotogramas ---------- */
+
+@keyframes rig-breathe {
+  0%,
+  100% {
+    transform: rotateX(-13deg) rotateY(-20deg) translateY(0) scale(1);
+  }
+  50% {
+    transform: rotateX(-11.4deg) rotateY(-17deg) translateY(-5px) scale(1.014);
+  }
+}
+
+@keyframes glow-breathe {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes floor-breathe {
+  0%,
+  100% {
+    opacity: 0.86;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+}
+
+/* El lazo se desata: los aros se abren, el nudo se lleva la luz */
+@keyframes bow-loosen {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, -$lh-half, 0) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -$lh-half - 16px, 14px) rotate(-6deg) scale(0.9);
+  }
+}
+
+@keyframes bow-loop-open {
+  0% {
+    transform: translate(-88%, -44%) rotate(-15deg) scale(1);
+  }
+  100% {
+    transform: translate(-94%, -32%) rotate(-42deg) scale(0.88);
+  }
+}
+
+@keyframes bow-tail-left {
+  0% {
+    transform: translate(-100%, 10px) rotate(9deg);
+  }
+  100% {
+    transform: translate(-108%, 26px) rotate(26deg);
+  }
+}
+
+@keyframes bow-tail-right {
+  0% {
+    transform: translate(0%, 10px) rotate(-9deg);
+  }
+  100% {
+    transform: translate(8%, 26px) rotate(-26deg);
+  }
+}
+
+@keyframes bow-knot {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(3px, -30px) rotate(18deg) scale(0.72);
+  }
+}
+
+/* La tapa se levanta y se echa hacia atrás */
+@keyframes lid-open {
+  0% {
+    transform: translateY($lid-y) rotateX(0deg) rotateZ(0deg);
+  }
+  38% {
+    transform: translateY($lid-y - 10px) rotateX(-8deg) rotateZ(1deg);
+  }
+  100% {
+    transform: translateY($lid-y - 20px) rotateX(50deg) rotateZ(2deg);
+  }
+}
+
+/* La tapa se apaga antes del corte, para no desaparecer de golpe */
+@keyframes lid-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes inner-bloom {
+  0% {
+    transform: rotateX(90deg) translateZ($bh-half + 3px) scale(0.22);
+  }
+  55% {
+    transform: rotateX(90deg) translateZ($bh-half + 3px) scale(1.04);
+  }
+  100% {
+    transform: rotateX(90deg) translateZ($bh-half + 3px) scale(0.94);
+  }
+}
+
+/* La columna de luz no aparece hasta que la tapa deja una rendija */
+@keyframes beam-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(-150px) scaleY(0.35);
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(-166px) scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-205px) scaleY(1.2);
+  }
+}
+
+@keyframes spark-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.3);
+  }
+  14% {
+    opacity: 1;
+    transform: translate3d(calc(var(--spark-x) * 0.28), calc(var(--spark-y) * 0.28), 0) scale(1);
+  }
+  62% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--spark-x), var(--spark-y), 0) scale(0.15);
+  }
+}
+
+@keyframes box-dissolve {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Adaptación a pantallas
+   ============================================================ */
+
+@media (max-width: 520px) {
+  .gift {
+    --gift-scale: 0.82;
+  }
+}
+
+@media (max-width: 360px) {
+  .gift {
+    --gift-scale: 0.68;
+  }
+}
+
+@media (min-height: 900px) {
+  .gift {
+    --gift-scale: 1.06;
+  }
+}
+
+@media (max-height: 620px) {
+  .gift {
+    --gift-scale: 0.66;
+  }
+}
+
+/* ============================================================
+   Movimiento reducido
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .gift__glow,
+  .gift__floor,
+  .gift__rig {
+    animation: none;
+  }
+
+  .gift--opening .lid,
+  .gift--opening .lid__face,
+  .gift--opening .bow,
+  .gift--opening .bow__loop,
+  .gift--opening .bow__tail,
+  .gift--opening .bow__knot,
+  .gift--opening .box__face,
+  .gift--opening .box__inner,
+  .gift--opening .box__beam,
+  .gift--opening .spark {
+    animation-duration: 1ms;
+    animation-delay: 0ms;
+  }
+}

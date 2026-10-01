@@ -1,0 +1,15 @@
+<div class="letter">
+  <article class="card" aria-labelledby="letter-salutation">
+    <span class="card__ornament" aria-hidden="true"></span>
+
+    <h1 id="letter-salutation" class="card__salutation" tabindex="-1">{{ salutation }}</h1>
+
+    @for (paragraph of body; track $index) {
+      <p class="card__paragraph">{{ paragraph }}</p>
+    }
+
+    @if (signOff) {
+      <p class="card__signoff">{{ signOff }}</p>
+    }
+  </article>
+</div>

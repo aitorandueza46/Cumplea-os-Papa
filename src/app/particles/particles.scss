@@ -1,0 +1,79 @@
+:host {
+  display: block;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.motes {
+  position: absolute;
+  inset: 0;
+}
+
+.mote {
+  position: absolute;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  width: var(--size, 2px);
+  height: var(--size, 2px);
+  margin: calc(var(--size, 2px) * -0.5);
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 236, 206, 0.95) 0%,
+    rgba(240, 178, 128, 0.34) 44%,
+    transparent 72%
+  );
+  will-change: transform, opacity;
+  animation: mote-drift var(--duration, 22s) var(--ease-in-out) infinite var(--delay, 0s);
+}
+
+/* Un punto de rosa y otro de turquesa, de forma sporádica */
+.mote:nth-child(5n + 2) {
+  background: radial-gradient(
+    circle,
+    rgba(255, 222, 230, 0.92) 0%,
+    rgba(242, 107, 140, 0.3) 44%,
+    transparent 72%
+  );
+}
+
+.mote:nth-child(7n + 4) {
+  background: radial-gradient(
+    circle,
+    rgba(220, 255, 250, 0.9) 0%,
+    rgba(126, 224, 210, 0.28) 44%,
+    transparent 72%
+  );
+}
+
+@keyframes mote-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.7);
+  }
+  12% {
+    opacity: var(--peak, 0.28);
+  }
+  46% {
+    opacity: calc(var(--peak, 0.28) * 0.74);
+    transform: translate3d(calc(var(--drift-x, 30px) * 0.32), calc(var(--drift-y, -60px) * 0.46), 0)
+      scale(0.92);
+  }
+  84% {
+    opacity: var(--peak, 0.28);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--drift-x, 30px), var(--drift-y, -60px), 0) scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mote {
+    animation: none;
+    opacity: var(--peak, 0.28);
+  }
+}

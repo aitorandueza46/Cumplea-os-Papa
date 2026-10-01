@@ -1,0 +1,15 @@
+<div class="motes" aria-hidden="true">
+  @for (mote of motes; track $index) {
+    <span
+      class="mote"
+      [style.--x.%]="mote.x"
+      [style.--y.%]="mote.y"
+      [style.--size.px]="mote.size"
+      [style.--duration.s]="mote.duration"
+      [style.--delay.s]="mote.delay"
+      [style.--drift-x.px]="mote.driftX"
+      [style.--drift-y.px]="mote.driftY"
+      [style.--peak]="mote.peak"
+    ></span>
+  }
+</div>
