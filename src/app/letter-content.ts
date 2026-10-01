@@ -1,4 +1,4 @@
-/**
+﻿/**
  * CONTENIDO DE LA CARTA — este es el único archivo que necesitas tocar
  * para escribir tu carta. Solo texto plano, un párrafo por línea.
  */
@@ -11,8 +11,8 @@ export const LETTER = {
 
   /** Cuerpo de la carta. Cada elemento es un párrafo. */
   paragraphs: [
-    'Muchas felicidades papa',
-    'Gracias por todo lo que has hecho por mí y Por lo mucho que te esfuerzas todos los dias.',
+    'Muchas felicidades papá',
+    'Gracias por todo lo que has hecho por mí y por lo mucho que te esfuerzas todos los días.',
     'Feliz cumpleaños.',
     'Te quiero mucho.',
   ],
