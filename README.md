@@ -2,6 +2,27 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
 
+## Deploy en Cloudflare Pages
+
+El proyecto se publica como sitio estático en [Cloudflare Pages](https://pages.cloudflare.com), conectado a este repositorio de GitHub.
+
+Configura el proyecto en **Workers & Pages → tu proyecto → Settings → Builds & deployments** con estos valores:
+
+| Campo | Valor |
+| --- | --- |
+| Framework preset | `None` |
+| Build command | `npm run build` |
+| Build output directory | `dist/regalo-cumpleanos-papa/browser` |
+| Root directory | `/` (vacío) |
+| Environment variable `NODE_VERSION` | `24` |
+
+Notas:
+
+- El directorio de salida es la carpeta `browser` dentro de `dist/`: ahí queda el `index.html` que Cloudflare sirve como portada, junto a los bundles `main-*.js` y `styles-*.css`.
+- `public/_headers` y `public/_redirects` se copian a la salida del build y los aplica Cloudflare automáticamente: cachear para siempre los assets con hash, no cachear el `index.html` y devolver la app (`200`) en rutas desconocidas en lugar de un 404.
+- `.node-version` fija la versión de Node del build. Si el build falla con un error de versión, añade también la variable de entorno `NODE_VERSION` en el panel.
+- Cada `push` a la rama principal dispara un despliegue nuevo.
+
 ## Development server
 
 To start a local development server, run:

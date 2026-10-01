@@ -1,0 +1,10 @@
+# Cloudflare Pages: cabeceras y caché del sitio.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+
+# El index nunca se cachea: así Cloudflare sirve siempre la versión actual.
+/index.html
+  Cache-Control: no-cache, must-revalidate

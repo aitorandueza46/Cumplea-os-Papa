@@ -1,0 +1,1787 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Para papá</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Un regalo de cumpleaños." />
+    <meta name="theme-color" content="#04050a" />
+    <meta name="color-scheme" content="dark" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2305070d'/%3E%3Crect x='16' y='27' width='32' height='23' rx='2' fill='%231b2444'/%3E%3Crect x='16' y='27' width='32' height='23' rx='2' fill='none' stroke='%232f3b66'/%3E%3Crect x='14' y='20' width='36' height='8' rx='2' fill='%232a3560'/%3E%3Crect x='30' y='20' width='4' height='30' fill='%23c9a24f'/%3E%3Crect x='16' y='35' width='32' height='3.5' fill='%23c9a24f'/%3E%3Cpath d='M32 20c-6-6-14-5-15 0-1 5 8 6 15 0zM32 20c6-6 14-5 15 0 1 5-8 6-15 0z' fill='%23e8cf95'/%3E%3C/svg%3E"
+    />
+    <style>
+      /* ============================================================
+         Tokens y reset
+         ============================================================ */
+
+      :root {
+        /* Paleta base: noche ciruela cálida (no azul, no negro plano) */
+        --night-900: #120a15;
+        --night-800: #1b0f1f;
+        --night-700: #26142b;
+        --night-600: #341b39;
+
+        /* Crema: texto y cinta */
+        --cream-100: #fff4e4;
+        --cream-200: #f7e3c9;
+        --cream-300: #ecd0a9;
+        --cream-400: #dcb884;
+
+        /* Festivo: oro cálido */
+        --gold-100: #ffeec2;
+        --gold-200: #f6d68f;
+        --gold-300: #e6b85f;
+        --gold-400: #cf9636;
+        --gold-500: #a9741f;
+
+        /* Acentos alegres, usados con medida */
+        --rose-300: #ff9db5;
+        --rose-400: #f26b8c;
+        --coral-300: #ffab8b;
+        --teal-300: #7ee0d2;
+
+        /* Caja */
+        --wine-600: #6c1631;
+        --wine-500: #8c1f40;
+        --wine-400: #a92a4e;
+
+        --warm-white: #f7efe6;
+        --warm-dim: rgba(247, 239, 230, 0.66);
+
+        /* Superficies */
+        --paper: linear-gradient(168deg, #221430 0%, #180e1e 58%, #120a15 100%);
+
+        /* Movimiento */
+        --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+        --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+        /* Tipografía */
+        --font-display:
+          'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino,
+          Georgia, 'Times New Roman', serif;
+        --font-body:
+          'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia,
+          'Times New Roman', serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        background-color: var(--night-900);
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        font-family: var(--font-body);
+        color: var(--warm-white);
+        background-color: var(--night-900);
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+
+      /* Reset de elementos */
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      button {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--gold-300);
+        outline-offset: 4px;
+        border-radius: 4px;
+      }
+
+      ::selection {
+        background: rgba(242, 107, 140, 0.32);
+        color: var(--cream-100);
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* ============================================================
+         Escena
+         ============================================================ */
+
+      .stage {
+        position: relative;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+        isolation: isolate;
+        background-color: var(--night-900);
+        background-image:
+          radial-gradient(58% 42% at 18% 14%, rgba(242, 107, 140, 0.16) 0%, transparent 62%),
+          radial-gradient(52% 40% at 84% 20%, rgba(126, 224, 210, 0.13) 0%, transparent 64%),
+          radial-gradient(70% 50% at 50% 96%, rgba(255, 171, 139, 0.13) 0%, transparent 66%),
+          radial-gradient(130% 90% at 50% 24%, #2b1730 0%, #1c0f22 44%, #120a15 100%);
+      }
+
+      /* Luz cálida ambiental que crece al abrir el regalo */
+      .stage__warm {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          58% 44% at 50% 40%,
+          rgba(255, 186, 130, 0.26) 0%,
+          rgba(230, 132, 110, 0.1) 46%,
+          transparent 74%
+        );
+        opacity: 0;
+        transition: opacity 1500ms var(--ease-out-soft);
+      }
+
+      /* ============================================================
+         Polvo cálido en suspensión
+         ============================================================ */
+
+      .particles-layer {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: block;
+        overflow: hidden;
+        pointer-events: none;
+        opacity: 1;
+        transition: opacity 1000ms var(--ease-out-soft);
+      }
+
+      .stage--letter .particles-layer {
+        opacity: 0.38;
+      }
+
+      .motes {
+        position: absolute;
+        inset: 0;
+      }
+
+      .mote {
+        position: absolute;
+        left: var(--x, 50%);
+        top: var(--y, 50%);
+        width: var(--size, 2px);
+        height: var(--size, 2px);
+        margin: calc(var(--size, 2px) * -0.5);
+        border-radius: 50%;
+        opacity: 0;
+        background: radial-gradient(
+          circle,
+          rgba(255, 236, 206, 0.95) 0%,
+          rgba(240, 178, 128, 0.34) 44%,
+          transparent 72%
+        );
+        will-change: transform, opacity;
+        animation: mote-drift var(--duration, 22s) var(--ease-in-out) infinite var(--delay, 0s);
+      }
+
+      /* Un punto de rosa y otro de turquesa, de forma sporádica */
+      .mote:nth-child(5n + 2) {
+        background: radial-gradient(
+          circle,
+          rgba(255, 222, 230, 0.92) 0%,
+          rgba(242, 107, 140, 0.3) 44%,
+          transparent 72%
+        );
+      }
+
+      .mote:nth-child(7n + 4) {
+        background: radial-gradient(
+          circle,
+          rgba(220, 255, 250, 0.9) 0%,
+          rgba(126, 224, 210, 0.28) 44%,
+          transparent 72%
+        );
+      }
+
+      @keyframes mote-drift {
+        0% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0) scale(0.7);
+        }
+        12% {
+          opacity: var(--peak, 0.28);
+        }
+        46% {
+          opacity: calc(var(--peak, 0.28) * 0.74);
+          transform: translate3d(calc(var(--drift-x, 30px) * 0.32), calc(var(--drift-y, -60px) * 0.46), 0)
+            scale(0.92);
+        }
+        84% {
+          opacity: var(--peak, 0.28);
+        }
+        100% {
+          opacity: 0;
+          transform: translate3d(var(--drift-x, 30px), var(--drift-y, -60px), 0) scale(1.06);
+        }
+      }
+
+      /* ============================================================
+         Regalo
+         ============================================================ */
+
+      .gift-host {
+        display: block;
+        width: 100%;
+      }
+
+      .gift {
+        position: relative;
+        width: 340px;
+        height: 330px;
+        transform: scale(var(--gift-scale, 1));
+        transition: transform 700ms var(--ease-out-soft);
+      }
+
+      /* Halo cálido del entorno */
+      .gift__glow {
+        position: absolute;
+        left: 50%;
+        top: 46%;
+        width: 460px;
+        height: 460px;
+        margin: -230px 0 0 -230px;
+        border-radius: 50%;
+        background: radial-gradient(
+          closest-side circle at 50% 46%,
+          rgba(255, 190, 165, 0.32) 0%,
+          rgba(226, 122, 112, 0.17) 34%,
+          rgba(130, 62, 76, 0.08) 58%,
+          transparent 76%
+        );
+        opacity: 0.85;
+        animation: glow-breathe 8.5s var(--ease-in-out) infinite;
+        transition: opacity 900ms var(--ease-out-soft);
+      }
+
+      /* Sombra de contacto */
+      .gift__floor {
+        position: absolute;
+        left: 50%;
+        top: 76%;
+        width: 320px;
+        height: 62px;
+        margin-left: -160px;
+        border-radius: 50%;
+        background: radial-gradient(
+          closest-side ellipse at 50% 50%,
+          rgba(28, 4, 14, 0.8) 0%,
+          rgba(20, 3, 10, 0.34) 48%,
+          rgba(14, 2, 8, 0.08) 72%,
+          transparent 88%
+        );
+        animation: floor-breathe 8.5s var(--ease-in-out) infinite;
+        transition: opacity 700ms var(--ease-out-soft), transform 700ms var(--ease-out-soft);
+      }
+
+      .gift__stage {
+        position: absolute;
+        inset: 0;
+        perspective: 1150px;
+        perspective-origin: 50% 44%;
+        transition: transform 800ms var(--ease-out-soft);
+      }
+
+      .gift__rig {
+        position: absolute;
+        left: 50%;
+        top: 47%;
+        width: 0;
+        height: 0;
+        transform-style: preserve-3d;
+        transform: rotateX(-13deg) rotateY(-20deg);
+        animation: rig-breathe 8.5s var(--ease-in-out) infinite;
+      }
+
+      .box {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        transform-style: preserve-3d;
+      }
+
+      /* ---------- Caras de la caja ---------- */
+
+      .box__face {
+        border-radius: 2px;
+      }
+
+      .box__face--front {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 220px;
+        height: 150px;
+        margin: -75px 0 0 -110px;
+        backface-visibility: hidden;
+        transform: translateZ(110px);
+        background-color: #6c1631;
+        background-image:
+          linear-gradient(
+              90deg,
+              #8a5f2a 0%,
+              #b9883a 12%,
+              #e8c98d 30%,
+              #fdf3de 46%,
+              #f2dcae 54%,
+              #d9ac68 70%,
+              #a97733 88%,
+              #7a5624 100%
+            ),
+          linear-gradient(
+              180deg,
+              #8a5f2a 0%,
+              #b9883a 12%,
+              #e8c98d 30%,
+              #fdf3de 46%,
+              #f2dcae 54%,
+              #d9ac68 70%,
+              #a97733 88%,
+              #7a5624 100%
+            ),
+          linear-gradient(168deg, #9c2549 0%, #6c1631 46%, #470d20 100%);
+        background-size:
+          100% 34px,
+          34px 100%,
+          100% 100%;
+        background-position:
+          50% 50%,
+          50% 50%,
+          0 0;
+        background-repeat: no-repeat;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 214, 208, 0.2),
+          inset 0 -18px 30px rgba(0, 0, 0, 0.5),
+          inset 0 14px 20px -10px rgba(40, 0, 12, 0.66);
+      }
+
+      .box__face--right {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 220px;
+        height: 150px;
+        margin: -75px 0 0 -110px;
+        backface-visibility: hidden;
+        transform: rotateY(90deg) translateZ(110px);
+        background-color: #3d0a1c;
+        background-image:
+          linear-gradient(
+            90deg,
+            #8a5f2a 0%,
+            #b9883a 12%,
+            #e8c98d 30%,
+            #fdf3de 46%,
+            #f2dcae 54%,
+            #d9ac68 70%,
+            #a97733 88%,
+            #7a5624 100%
+          ),
+          linear-gradient(184deg, #5e1229 0%, #3d0a1c 52%, #2c0616 100%);
+        background-size:
+          100% 34px,
+          100% 100%;
+        background-position:
+          50% 50%,
+          0 0;
+        background-repeat: no-repeat;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 214, 208, 0.11),
+          inset 0 -16px 26px rgba(0, 0, 0, 0.55);
+      }
+
+      .box__face--left {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 220px;
+        height: 150px;
+        margin: -75px 0 0 -110px;
+        backface-visibility: hidden;
+        transform: rotateY(-90deg) translateZ(110px);
+        background-color: #240514;
+        background-image:
+          linear-gradient(
+            90deg,
+            #8a5f2a 0%,
+            #b9883a 12%,
+            #e8c98d 30%,
+            #fdf3de 46%,
+            #f2dcae 54%,
+            #d9ac68 70%,
+            #a97733 88%,
+            #7a5624 100%
+          ),
+          linear-gradient(176deg, #4a0c1e 0%, #2c0616 100%);
+        background-size:
+          100% 34px,
+          100% 100%;
+        background-position:
+          50% 50%,
+          0 0;
+        background-repeat: no-repeat;
+      }
+
+      .box__face--top {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 220px;
+        height: 220px;
+        margin: -110px 0 0 -110px;
+        backface-visibility: hidden;
+        transform: rotateX(90deg) translateZ(75px);
+        background-color: #8c1f40;
+        background-image:
+          linear-gradient(
+              90deg,
+              #8a5f2a 0%,
+              #b9883a 12%,
+              #e8c98d 30%,
+              #fdf3de 46%,
+              #f2dcae 54%,
+              #d9ac68 70%,
+              #a97733 88%,
+              #7a5624 100%
+            ),
+          linear-gradient(
+              180deg,
+              #8a5f2a 0%,
+              #b9883a 12%,
+              #e8c98d 30%,
+              #fdf3de 46%,
+              #f2dcae 54%,
+              #d9ac68 70%,
+              #a97733 88%,
+              #7a5624 100%
+            ),
+          linear-gradient(178deg, #b93159 0%, #8c1f40 44%, #6c1631 100%);
+        background-size:
+          100% 34px,
+          34px 100%,
+          100% 100%;
+        background-position:
+          50% 50%,
+          50% 50%,
+          0 0;
+        background-repeat: no-repeat;
+        box-shadow: inset 0 0 40px rgba(40, 0, 12, 0.42);
+      }
+
+      /* ---------- Luz interior ---------- */
+
+      .box__inner {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 220px;
+        height: 220px;
+        margin: -110px 0 0 -110px;
+        backface-visibility: hidden;
+        transform: rotateX(90deg) translateZ(78px);
+        display: grid;
+        place-items: center;
+        opacity: 0;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(255, 236, 194, 0.95) 0%,
+          rgba(247, 206, 137, 0.6) 26%,
+          rgba(206, 152, 76, 0.22) 52%,
+          transparent 74%
+        );
+        transition: opacity 400ms linear;
+      }
+
+      .box__inner-core {
+        width: 62%;
+        height: 62%;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 249, 233, 1) 0%,
+          rgba(255, 226, 168, 0.5) 44%,
+          transparent 72%
+        );
+      }
+
+      /* Columna de luz que sube del interior */
+      .box__beam {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 250px;
+        height: 170px;
+        margin-left: -125px;
+        transform: translateY(-150px);
+        transform-origin: 50% 100%;
+        transform-style: flat;
+        opacity: 0;
+        background: linear-gradient(
+          0deg,
+          rgba(255, 232, 184, 0.5) 0%,
+          rgba(250, 210, 143, 0.22) 32%,
+          rgba(226, 176, 100, 0.07) 62%,
+          transparent 86%
+        );
+      }
+
+      /* ---------- Destellos que salen de la caja ---------- */
+
+      .sparks {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 0;
+        height: 0;
+        transform: translate3d(0, -75px, 0);
+        transform-style: flat;
+      }
+
+      .spark {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 5px;
+        height: 5px;
+        margin: -2.5px 0 0 -2.5px;
+        border-radius: 50%;
+        opacity: 0;
+        background: radial-gradient(
+          circle,
+          rgba(255, 246, 226, 1) 0%,
+          rgba(255, 216, 152, 0.42) 46%,
+          transparent 74%
+        );
+        transform: translate3d(0, 0, 0) scale(0.3);
+      }
+
+      /* Destellos con un punto de color festivo, sin llegar a confeti */
+      .spark:nth-child(3n + 2) {
+        background: radial-gradient(
+          circle,
+          rgba(255, 226, 234, 1) 0%,
+          rgba(255, 157, 181, 0.46) 46%,
+          transparent 74%
+        );
+      }
+
+      .spark:nth-child(3n + 3) {
+        background: radial-gradient(
+          circle,
+          rgba(226, 255, 250, 1) 0%,
+          rgba(126, 224, 210, 0.42) 46%,
+          transparent 74%
+        );
+      }
+
+      /* ---------- Tapa ---------- */
+
+      .lid {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        transform-style: preserve-3d;
+        transform-origin: 0 26px -122px;
+        transform: translateY(-101px);
+        transition: transform 900ms var(--ease-out-soft);
+      }
+
+      .lid__face {
+        border-radius: 3px;
+      }
+
+      .lid__face--front {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 244px;
+        height: 52px;
+        margin: -26px 0 0 -122px;
+        backface-visibility: hidden;
+        transform: translateZ(122px);
+        background-color: #6c1631;
+        background-image:
+          linear-gradient(
+              90deg,
+              #8a5f2a 0%,
+              #b9883a 12%,
+              #e8c98d 30%,
+              #fdf3de 46%,
+              #f2dcae 54%,
+              #d9ac68 70%,
+              #a97733 88%,
+              #7a5624 100%
+            ),
+          linear-gradient(
+              180deg,
+              #8a5f2a 0%,
+              #b9883a 12%,
+              #e8c98d 30%,
+              #fdf3de 46%,
+              #f2dcae 54%,
+              #d9ac68 70%,
+              #a97733 88%,
+              #7a5624 100%
+            ),
+          linear-gradient(170deg, #b93159 0%, #8c1f40 48%, #6c1631 100%);
+        background-size:
+          100% 34px,
+          34px 100%,
+          100% 100%;
+        background-position:
+          50% 50%,
+          50% 50%,
+          0 0;
+        background-repeat: no-repeat;
+        box-shadow:
+          inset 0 1.5px 0 rgba(255, 220, 214, 0.28),
+          inset 0 -14px 22px rgba(0, 0, 0, 0.44),
+          inset 0 12px 16px -8px rgba(40, 0, 12, 0.56);
+      }
+
+      .lid__face--right {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 244px;
+        height: 52px;
+        margin: -26px 0 0 -122px;
+        backface-visibility: hidden;
+        transform: rotateY(90deg) translateZ(122px);
+        background-color: #3d0a1c;
+        background-image:
+          linear-gradient(
+            90deg,
+            #8a5f2a 0%,
+            #b9883a 12%,
+            #e8c98d 30%,
+            #fdf3de 46%,
+            #f2dcae 54%,
+            #d9ac68 70%,
+            #a97733 88%,
+            #7a5624 100%
+          ),
+          linear-gradient(186deg, #6c1631 0%, #4a0c1e 54%, #2c0616 100%);
+        background-size:
+          100% 34px,
+          100% 100%;
+        background-position:
+          50% 50%,
+          0 0;
+        background-repeat: no-repeat;
+        box-shadow: inset 0 1.5px 0 rgba(255, 220, 214, 0.15);
+      }
+
+      .lid__face--top {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 244px;
+        height: 244px;
+        margin: -122px 0 0 -122px;
+        backface-visibility: hidden;
+        transform: rotateX(90deg) translateZ(26px);
+        background-color: #8c1f40;
+        background-image:
+          linear-gradient(
+              90deg,
+              #8a5f2a 0%,
+              #b9883a 12%,
+              #e8c98d 30%,
+              #fdf3de 46%,
+              #f2dcae 54%,
+              #d9ac68 70%,
+              #a97733 88%,
+              #7a5624 100%
+            ),
+          linear-gradient(
+              180deg,
+              #8a5f2a 0%,
+              #b9883a 12%,
+              #e8c98d 30%,
+              #fdf3de 46%,
+              #f2dcae 54%,
+              #d9ac68 70%,
+              #a97733 88%,
+              #7a5624 100%
+            ),
+          linear-gradient(180deg, #cf3f68 0%, #a92a4e 46%, #7d1a38 100%);
+        background-size:
+          100% 34px,
+          34px 100%,
+          100% 100%;
+        background-position:
+          50% 50%,
+          50% 50%,
+          0 0;
+        background-repeat: no-repeat;
+        box-shadow:
+          inset 0 0 44px rgba(40, 0, 12, 0.34),
+          inset 0 2px 0 rgba(255, 224, 216, 0.16);
+      }
+
+      .lid__face--inside {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 244px;
+        height: 244px;
+        margin: -122px 0 0 -122px;
+        backface-visibility: hidden;
+        transform: rotateX(-90deg) translateZ(26px);
+        background: linear-gradient(0deg, #f4d3c6 0%, #dba994 100%);
+        box-shadow: inset 0 0 30px rgba(90, 20, 40, 0.4);
+      }
+
+      /* ---------- Lazo ---------- */
+
+      .bow {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 0;
+        transform: translate3d(0, -26px, 0);
+        transform-style: flat;
+      }
+
+      .bow__loop,
+      .bow__flip,
+      .bow__tail,
+      .bow__knot {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .bow__loop {
+        width: 92px;
+        height: 54px;
+        border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
+        background: linear-gradient(
+          152deg,
+          #fdf6e6 0%,
+          #ecd296 18%,
+          #d2ab5c 44%,
+          #a37d33 72%,
+          #745722 100%
+        );
+        box-shadow:
+          inset 0 5px 8px rgba(255, 248, 232, 0.44),
+          inset 0 -8px 12px rgba(60, 36, 10, 0.4),
+          0 6px 14px rgba(40, 0, 12, 0.45);
+      }
+
+      .bow__loop::after {
+        content: '';
+        position: absolute;
+        inset: 26% 12% 16% 16%;
+        border-radius: 50%;
+        background: linear-gradient(160deg, rgba(96, 62, 24, 0.46) 0%, rgba(48, 28, 8, 0.7) 100%);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      /* El lazo derecho es el izquierdo reflejado: se voltea el contenedor,
+         así la simetría es exacta y no depende de cálculos. */
+      .bow__flip {
+        transform: scaleX(-1);
+      }
+
+      .bow__loop--left,
+      .bow__loop--right {
+        transform: translate(-88%, -44%) rotate(-15deg);
+        transform-origin: 92% 52%;
+      }
+
+      .bow__tail {
+        width: 20px;
+        height: 74px;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+        background: linear-gradient(
+          100deg,
+          #f2dda6 0%,
+          #cfa85c 40%,
+          #9a7530 78%,
+          #6f5122 100%
+        );
+        box-shadow: inset 0 -6px 10px rgba(60, 36, 10, 0.34);
+      }
+
+      .bow__tail--left {
+        transform: translate(-100%, 10px) rotate(9deg);
+      }
+
+      .bow__tail--right {
+        transform: translate(0%, 10px) rotate(-9deg);
+      }
+
+      .bow__knot {
+        width: 38px;
+        height: 30px;
+        margin: -15px 0 0 -19px;
+        border-radius: 46% 54% 50% 50% / 56% 48% 52% 44%;
+        background: radial-gradient(
+          ellipse at 38% 30%,
+          #fffaf0 0%,
+          #f0dcaa 22%,
+          #cfa95e 52%,
+          #8a6728 100%
+        );
+        box-shadow:
+          inset 0 -3px 6px rgba(60, 36, 10, 0.32),
+          0 4px 10px rgba(40, 0, 12, 0.5);
+      }
+
+      /* ---------- Microinteracción ---------- */
+
+      @media (hover: hover) and (pointer: fine) {
+        .gift:hover .gift__stage {
+          transform: translateY(-7px) scale(1.03);
+        }
+      }
+
+      /* ---------- Animación de apertura ---------- */
+
+      .gift--opening .gift__glow {
+        animation: none;
+        opacity: 1;
+        transform: scale(1.28);
+      }
+
+      .gift--opening .gift__floor {
+        animation: none;
+        opacity: 0;
+        transform: scale(0.82);
+      }
+
+      .gift--opening .box__face,
+      .gift--opening .box__inner {
+        animation: box-dissolve 900ms 780ms var(--ease-out-soft) forwards;
+      }
+
+      .gift--opening .box__inner {
+        animation:
+          box-dissolve 900ms 780ms var(--ease-out-soft) forwards,
+          inner-bloom 1150ms 520ms var(--ease-out-soft) forwards;
+      }
+
+      .gift--opening .box__beam {
+        animation: beam-rise 1000ms 820ms var(--ease-out-soft) forwards;
+      }
+
+      .gift--opening .lid {
+        animation: lid-open 1250ms 430ms cubic-bezier(0.32, 0, 0.12, 1) forwards;
+      }
+
+      .gift--opening .lid__face {
+        animation: lid-fade 620ms 1180ms var(--ease-out-soft) forwards;
+      }
+
+      .gift--opening .bow {
+        animation: bow-loosen 620ms 210ms var(--ease-out-soft) forwards;
+      }
+
+      .gift--opening .bow__loop--left,
+      .gift--opening .bow__loop--right {
+        animation: bow-loop-open 640ms 210ms var(--ease-out-soft) forwards;
+      }
+
+      .gift--opening .bow__tail--left {
+        animation: bow-tail-left 640ms 210ms var(--ease-out-soft) forwards;
+      }
+
+      .gift--opening .bow__tail--right {
+        animation: bow-tail-right 640ms 210ms var(--ease-out-soft) forwards;
+      }
+
+      .gift--opening .bow__knot {
+        animation: bow-knot 700ms 210ms var(--ease-out-soft) forwards;
+      }
+
+      .gift--opening .spark {
+        animation: spark-rise 980ms var(--ease-out-soft) var(--spark-delay) forwards;
+      }
+
+      /* Trayectorias de los destellos: se repiten en espejo */
+      .spark:nth-child(1) { --spark-delay: 700ms; --spark-x: -74px; --spark-y: -128px; }
+      .spark:nth-child(2) { --spark-delay: 760ms; --spark-x: 66px; --spark-y: -146px; }
+      .spark:nth-child(3) { --spark-delay: 690ms; --spark-x: -34px; --spark-y: -168px; }
+      .spark:nth-child(4) { --spark-delay: 820ms; --spark-x: 92px; --spark-y: -104px; }
+      .spark:nth-child(5) { --spark-delay: 740ms; --spark-x: -104px; --spark-y: -92px; }
+      .spark:nth-child(6) { --spark-delay: 880ms; --spark-x: 40px; --spark-y: -118px; }
+      .spark:nth-child(7) { --spark-delay: 720ms; --spark-x: -16px; --spark-y: -142px; }
+      .spark:nth-child(8) { --spark-delay: 840ms; --spark-x: 78px; --spark-y: -158px; }
+      .spark:nth-child(9) { --spark-delay: 790ms; --spark-x: -58px; --spark-y: -116px; }
+      .spark:nth-child(10) { --spark-delay: 920ms; --spark-x: 24px; --spark-y: -86px; }
+      .spark:nth-child(11) { --spark-delay: 730ms; --spark-x: -88px; --spark-y: -150px; }
+      .spark:nth-child(12) { --spark-delay: 870ms; --spark-x: 56px; --spark-y: -132px; }
+      .spark:nth-child(13) { --spark-delay: 810ms; --spark-x: -26px; --spark-y: -96px; }
+      .spark:nth-child(14) { --spark-delay: 950ms; --spark-x: 84px; --spark-y: -172px; }
+
+      /* ---------- Fotogramas ---------- */
+
+      @keyframes rig-breathe {
+        0%,
+        100% {
+          transform: rotateX(-13deg) rotateY(-20deg) translateY(0) scale(1);
+        }
+        50% {
+          transform: rotateX(-11.4deg) rotateY(-17deg) translateY(-5px) scale(1.014);
+        }
+      }
+
+      @keyframes glow-breathe {
+        0%,
+        100% {
+          opacity: 0.72;
+          transform: scale(0.97);
+        }
+        50% {
+          opacity: 0.95;
+          transform: scale(1.04);
+        }
+      }
+
+      @keyframes floor-breathe {
+        0%,
+        100% {
+          opacity: 0.86;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(0.95);
+        }
+      }
+
+      /* El lazo se desata: los aros se abren, el nudo se lleva la luz */
+      @keyframes bow-loosen {
+        0% {
+          opacity: 1;
+          transform: translate3d(0, -26px, 0) rotate(0deg) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate3d(0, -42px, 14px) rotate(-6deg) scale(0.9);
+        }
+      }
+
+      @keyframes bow-loop-open {
+        0% {
+          transform: translate(-88%, -44%) rotate(-15deg) scale(1);
+        }
+        100% {
+          transform: translate(-94%, -32%) rotate(-42deg) scale(0.88);
+        }
+      }
+
+      @keyframes bow-tail-left {
+        0% {
+          transform: translate(-100%, 10px) rotate(9deg);
+        }
+        100% {
+          transform: translate(-108%, 26px) rotate(26deg);
+        }
+      }
+
+      @keyframes bow-tail-right {
+        0% {
+          transform: translate(0%, 10px) rotate(-9deg);
+        }
+        100% {
+          transform: translate(8%, 26px) rotate(-26deg);
+        }
+      }
+
+      @keyframes bow-knot {
+        0% {
+          opacity: 1;
+          transform: translate(0, 0) rotate(0deg) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(3px, -30px) rotate(18deg) scale(0.72);
+        }
+      }
+
+      /* La tapa se levanta y se echa hacia atrás */
+      @keyframes lid-open {
+        0% {
+          transform: translateY(-101px) rotateX(0deg) rotateZ(0deg);
+        }
+        38% {
+          transform: translateY(-111px) rotateX(-8deg) rotateZ(1deg);
+        }
+        100% {
+          transform: translateY(-121px) rotateX(50deg) rotateZ(2deg);
+        }
+      }
+
+      /* La tapa se apaga antes del corte, para no desaparecer de golpe */
+      @keyframes lid-fade {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes inner-bloom {
+        0% {
+          transform: rotateX(90deg) translateZ(78px) scale(0.22);
+        }
+        55% {
+          transform: rotateX(90deg) translateZ(78px) scale(1.04);
+        }
+        100% {
+          transform: rotateX(90deg) translateZ(78px) scale(0.94);
+        }
+      }
+
+      /* La columna de luz no aparece hasta que la tapa deja una rendija */
+      @keyframes beam-rise {
+        0% {
+          opacity: 0;
+          transform: translateY(-150px) scaleY(0.35);
+        }
+        45% {
+          opacity: 1;
+          transform: translateY(-166px) scaleY(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-205px) scaleY(1.2);
+        }
+      }
+
+      @keyframes spark-rise {
+        0% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0) scale(0.3);
+        }
+        14% {
+          opacity: 1;
+          transform: translate3d(calc(var(--spark-x) * 0.28), calc(var(--spark-y) * 0.28), 0) scale(1);
+        }
+        62% {
+          opacity: 0.8;
+        }
+        100% {
+          opacity: 0;
+          transform: translate3d(var(--spark-x), var(--spark-y), 0) scale(0.15);
+        }
+      }
+
+      @keyframes box-dissolve {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      /* ---------- Adaptación a pantallas ---------- */
+
+      @media (max-width: 520px) {
+        .gift {
+          --gift-scale: 0.82;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .gift {
+          --gift-scale: 0.68;
+        }
+      }
+
+      @media (min-height: 900px) {
+        .gift {
+          --gift-scale: 1.06;
+        }
+      }
+
+      @media (max-height: 620px) {
+        .gift {
+          --gift-scale: 0.66;
+        }
+      }
+
+      /* ============================================================
+         Pantalla inicial
+         ============================================================ */
+
+      .intro,
+      .reveal {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(1.5rem, 5vh, 3rem) 1.25rem;
+        text-align: center;
+      }
+
+      .intro[hidden],
+      .reveal[hidden],
+      .letter[hidden] {
+        display: none;
+      }
+
+      .intro__dedication {
+        margin-top: clamp(1.5rem, 4.5vh, 2.5rem);
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 5.6vw, 2rem);
+        font-weight: 400;
+        letter-spacing: 0.055em;
+        color: var(--warm-white);
+        text-shadow: 0 0 30px rgba(255, 179, 190, 0.22);
+        transition:
+          opacity 620ms var(--ease-out-soft),
+          transform 620ms var(--ease-out-soft);
+      }
+
+      .open {
+        margin-top: clamp(1.75rem, 4.5vh, 2.6rem);
+        padding: 1.05rem 2.15rem;
+        border: 1px solid rgba(255, 190, 205, 0.3);
+        border-radius: 2px;
+        background: linear-gradient(180deg, rgba(255, 214, 224, 0.07) 0%, rgba(255, 214, 224, 0) 100%);
+        color: var(--rose-300);
+        font-size: 0.71rem;
+        font-weight: 400;
+        letter-spacing: 0.3em;
+        text-indent: 0.3em;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        transition:
+          opacity 620ms var(--ease-out-soft),
+          transform 620ms var(--ease-out-soft),
+          color 520ms var(--ease-out-soft),
+          border-color 520ms var(--ease-out-soft),
+          box-shadow 520ms var(--ease-out-soft);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .open:hover {
+          color: var(--cream-100);
+          border-color: rgba(255, 205, 218, 0.62);
+          box-shadow:
+            0 0 36px -8px rgba(242, 107, 140, 0.42),
+            inset 0 0 24px -12px rgba(255, 214, 224, 0.4);
+        }
+      }
+
+      .open:active {
+        transform: scale(0.982);
+      }
+
+      /* Salida suave al empezar la apertura */
+      .intro--out .intro__dedication,
+      .intro--out .open {
+        opacity: 0;
+        transform: translateY(16px);
+        pointer-events: none;
+      }
+
+      /* ============================================================
+         Antes de la carta
+         ============================================================ */
+
+      .reveal {
+        z-index: 2;
+        gap: clamp(1.25rem, 4vh, 1.9rem);
+        pointer-events: none;
+        transition:
+          opacity 700ms var(--ease-out-soft),
+          transform 700ms var(--ease-out-soft);
+      }
+
+      .reveal--out {
+        opacity: 0;
+        transform: translateY(-12px);
+      }
+
+      .reveal__dedication {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 8vw, 3rem);
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        line-height: 1.2;
+        color: var(--cream-100);
+        text-shadow: 0 0 44px rgba(255, 175, 190, 0.32);
+        animation: reveal-in 1400ms var(--ease-out-soft) both;
+      }
+
+      .reveal__prelude[hidden] {
+        display: none;
+      }
+
+      .reveal__prelude {
+        max-width: 24rem;
+        font-family: var(--font-body);
+        font-size: clamp(1rem, 3.6vw, 1.2rem);
+        font-style: italic;
+        line-height: 1.7;
+        letter-spacing: 0.015em;
+        color: rgba(250, 236, 232, 0.78);
+        animation: reveal-in 1400ms 240ms var(--ease-out-soft) both;
+      }
+
+      @keyframes reveal-in {
+        0% {
+          opacity: 0;
+          filter: blur(5px);
+          transform: translateY(18px);
+        }
+        60% {
+          opacity: 1;
+          filter: blur(0);
+        }
+        100% {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateY(0);
+        }
+      }
+
+      /* ============================================================
+         Carta
+         ============================================================ */
+
+      .letter {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: flex;
+        justify-content: center;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: clamp(1.75rem, 6vh, 4rem) 1.25rem;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .letter__inner {
+        display: flex;
+        margin: auto;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .card {
+        position: relative;
+        width: min(100%, 33.5rem);
+        padding:
+          clamp(2.5rem, 8vw, 4.25rem) clamp(1.75rem, 7vw, 3.5rem) clamp(2.75rem, 8vw, 4rem);
+        border: 1px solid rgba(255, 197, 190, 0.12);
+        border-radius: 4px;
+        background:
+          radial-gradient(120% 90% at 50% 0%, rgba(150, 62, 84, 0.22) 0%, transparent 58%),
+          linear-gradient(168deg, #241627 0%, #1a0f1e 56%, #140b19 100%);
+        box-shadow:
+          0 44px 90px -34px rgba(12, 2, 10, 0.9),
+          0 14px 34px -14px rgba(12, 2, 10, 0.72),
+          inset 0 1px 0 rgba(255, 216, 200, 0.09);
+        animation: letter-in 1250ms var(--ease-out-soft) both;
+      }
+
+      .card::before {
+        content: '';
+        position: absolute;
+        inset: 9px;
+        border: 1px solid rgba(255, 197, 190, 0.06);
+        border-radius: 2px;
+        pointer-events: none;
+      }
+
+      .card__ornament {
+        position: relative;
+        display: block;
+        width: 46px;
+        height: 1px;
+        margin: 0 auto clamp(1.75rem, 5vw, 2.5rem);
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(242, 107, 140, 0.72) 50%,
+          transparent 100%
+        );
+      }
+
+      .card__ornament::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 5px;
+        height: 5px;
+        margin: -2.5px 0 0 -2.5px;
+        background: var(--rose-300);
+        transform: rotate(45deg);
+        box-shadow: 0 0 10px rgba(255, 157, 181, 0.55);
+      }
+
+      .card__salutation {
+        margin-bottom: clamp(1.5rem, 4.5vw, 2rem);
+        font-family: var(--font-display);
+        font-size: clamp(1.55rem, 5vw, 2.1rem);
+        font-weight: 400;
+        line-height: 1.28;
+        letter-spacing: 0.005em;
+        color: var(--cream-100);
+      }
+
+      .card__salutation:focus-visible {
+        outline: none;
+      }
+
+      .card__paragraph {
+        font-size: clamp(1.02rem, 2.9vw, 1.125rem);
+        line-height: 2;
+        color: rgba(250, 238, 234, 0.86);
+      }
+
+      .card__paragraph + .card__paragraph {
+        margin-top: 1.5rem;
+      }
+
+      .card__signoff {
+        margin-top: clamp(1.75rem, 5vw, 2.25rem);
+        font-size: clamp(1.06rem, 3vw, 1.2rem);
+        line-height: 1.9;
+        letter-spacing: 0.01em;
+        color: var(--rose-300);
+      }
+
+      @keyframes letter-in {
+        0% {
+          opacity: 0;
+          filter: blur(6px);
+          transform: translateY(28px) scale(0.986);
+        }
+        55% {
+          opacity: 1;
+          filter: blur(0);
+        }
+        100% {
+          opacity: 1;
+          filter: blur(0);
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* ============================================================
+         Movimiento reducido
+         ============================================================ */
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+          scroll-behavior: auto !important;
+        }
+
+        .gift__glow,
+        .gift__floor,
+        .gift__rig {
+          animation: none;
+        }
+
+        .gift--opening .lid,
+        .gift--opening .lid__face,
+        .gift--opening .bow,
+        .gift--opening .bow__loop,
+        .gift--opening .bow__tail,
+        .gift--opening .bow__knot,
+        .gift--opening .box__face,
+        .gift--opening .box__inner,
+        .gift--opening .box__beam,
+        .gift--opening .spark {
+          animation-duration: 1ms;
+          animation-delay: 0ms;
+        }
+
+        .mote {
+          animation: none;
+          opacity: var(--peak, 0.28);
+        }
+
+        .stage__warm,
+        .particles-layer,
+        .reveal,
+        .intro__dedication,
+        .open {
+          transition-duration: 1ms;
+        }
+
+        .reveal__dedication,
+        .reveal__prelude,
+        .card {
+          animation: none;
+          opacity: 1;
+          filter: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage" id="stage">
+      <div class="stage__warm" id="warm" aria-hidden="true"></div>
+
+      <div class="particles-layer" aria-hidden="true">
+        <div class="motes" id="motes"></div>
+      </div>
+
+      <p class="visually-hidden" id="announcement" role="status" aria-live="polite"></p>
+
+      <section class="intro" id="intro">
+        <div class="gift-host">
+          <div class="gift" id="gift">
+            <div class="gift__glow" aria-hidden="true"></div>
+            <div class="gift__floor" aria-hidden="true"></div>
+
+            <div class="gift__stage" aria-hidden="true">
+              <div class="gift__rig">
+                <div class="box">
+                  <div class="box__face box__face--right"></div>
+                  <div class="box__face box__face--front"></div>
+                  <div class="box__face box__face--top"></div>
+                  <div class="box__face box__face--left"></div>
+
+                  <div class="box__inner">
+                    <span class="box__inner-core"></span>
+                  </div>
+
+                  <div class="box__beam"></div>
+
+                  <div class="sparks">
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                    <span class="spark"></span>
+                  </div>
+                </div>
+
+                <div class="lid">
+                  <div class="lid__face lid__face--right"></div>
+                  <div class="lid__face lid__face--front"></div>
+                  <div class="lid__face lid__face--top"></div>
+                  <div class="lid__face lid__face--inside"></div>
+
+                  <div class="bow">
+                    <span class="bow__loop bow__loop--left"></span>
+                    <span class="bow__flip">
+                      <span class="bow__loop bow__loop--right"></span>
+                    </span>
+                    <span class="bow__tail bow__tail--left"></span>
+                    <span class="bow__tail bow__tail--right"></span>
+                    <span class="bow__knot"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="intro__dedication" id="intro-dedication">Para papá</h1>
+        <button class="open" id="open" type="button" aria-label="Abrir regalo">ABRIR REGALO</button>
+      </section>
+
+      <section class="reveal" id="reveal" hidden>
+        <h1 class="reveal__dedication" id="reveal-dedication">Para papá</h1>
+        <p class="reveal__prelude" id="reveal-prelude" hidden></p>
+      </section>
+
+      <div class="letter" id="letter" hidden>
+        <div class="letter__inner">
+          <article class="card" id="card" aria-labelledby="letter-salutation"></article>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        'use strict';
+
+        /* ==========================================================
+           CONTENIDO DE LA CARTA — este es el único bloque que necesitas
+           tocar para escribir tu carta. Solo texto plano, un párrafo
+           por línea.
+           ========================================================== */
+        var LETTER = {
+          /** Texto que aparece debajo del regalo y al abrirse la carta. */
+          dedication: 'Para papá',
+
+          /** Frase breve que aparece justo antes de la carta. */
+          prelude: 'Hay cosas que no digo todo lo que debería.',
+
+          /** Cuerpo de la carta. Cada elemento es un párrafo. */
+          paragraphs: [
+            'Muchas felicidades papá',
+            'Gracias por todo lo que has hecho por mí y por lo mucho que te esfuerzas todos los días.',
+            'Feliz cumpleaños.',
+            'Te quiero mucho.',
+          ],
+        };
+
+        /** Marcas de la secuencia, en milisegundos desde que se pulsa el botón. */
+        var TIMELINE = [
+          { after: 2000, phase: 'dedication' },
+          { after: 3200, phase: 'prelude' },
+          { after: 4800, phase: 'letter' },
+        ];
+
+        var REDUCED_MOTION_SCALE = 0.1;
+        var MOTE_COUNT = 22;
+
+        var stage = document.getElementById('stage');
+        var warm = document.getElementById('warm');
+        var intro = document.getElementById('intro');
+        var reveal = document.getElementById('reveal');
+        var revealPrelude = document.getElementById('reveal-prelude');
+        var letterLayer = document.getElementById('letter');
+        var card = document.getElementById('card');
+        var gift = document.getElementById('gift');
+        var openButton = document.getElementById('open');
+        var announcement = document.getElementById('announcement');
+
+        document.getElementById('intro-dedication').textContent = LETTER.dedication;
+        document.getElementById('reveal-dedication').textContent = LETTER.dedication;
+        revealPrelude.textContent = LETTER.prelude;
+
+        /* ==========================================================
+           Carta: la primera línea es la salutación y la última la
+           firma; el resto son párrafos del cuerpo.
+           ========================================================== */
+        function buildLetter() {
+          var paragraphs = LETTER.paragraphs;
+          var lastIndex = paragraphs.length - 1;
+          var salutation = paragraphs[0] || '';
+          var signOff = paragraphs.length > 1 ? paragraphs[lastIndex] : '';
+          var body = paragraphs.length > 2 ? paragraphs.slice(1, lastIndex) : [];
+
+          var fragment = document.createDocumentFragment();
+
+          var ornament = document.createElement('span');
+          ornament.className = 'card__ornament';
+          ornament.setAttribute('aria-hidden', 'true');
+
+          var heading = document.createElement('h1');
+          heading.id = 'letter-salutation';
+          heading.className = 'card__salutation';
+          heading.tabIndex = -1;
+          heading.textContent = salutation;
+
+          fragment.appendChild(ornament);
+          fragment.appendChild(heading);
+
+          body.forEach(function (paragraph) {
+            var element = document.createElement('p');
+            element.className = 'card__paragraph';
+            element.textContent = paragraph;
+            fragment.appendChild(element);
+          });
+
+          if (signOff) {
+            var off = document.createElement('p');
+            off.className = 'card__signoff';
+            off.textContent = signOff;
+            fragment.appendChild(off);
+          }
+
+          card.textContent = '';
+          card.appendChild(fragment);
+        }
+
+        /* ==========================================================
+           Polvo cálido suspendido en el aire. Las posiciones salen de
+           un generador con semilla fija: la escena es idéntica en
+           cada carga y las animaciones nunca empiezan desfasadas.
+           ========================================================== */
+        function buildMotes(count) {
+          var seed = 20260419;
+
+          function next() {
+            seed = (seed * 1103515245 + 12345) % 2147483648;
+            return seed / 2147483648;
+          }
+
+          var layer = document.getElementById('motes');
+          var fragment = document.createDocumentFragment();
+
+          for (var i = 0; i < count; i++) {
+            var mote = document.createElement('span');
+            mote.className = 'mote';
+            mote.style.setProperty('--x', next() * 100 + '%');
+            mote.style.setProperty('--y', next() * 100 + '%');
+            mote.style.setProperty('--size', (1.3 + next() * 2.4) + 'px');
+            mote.style.setProperty('--duration', 16 + next() * 20 + 's');
+            mote.style.setProperty('--delay', -next() * 34 + 's');
+            mote.style.setProperty('--drift-x', (next() - 0.5) * 110 + 'px');
+            mote.style.setProperty('--drift-y', -40 - next() * 120 + 'px');
+            mote.style.setProperty('--peak', 0.14 + next() * 0.3);
+            fragment.appendChild(mote);
+          }
+
+          layer.textContent = '';
+          layer.appendChild(fragment);
+        }
+
+        /* ==========================================================
+           Secuencia
+           ========================================================== */
+        var phase = 'intro';
+        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var timers = [];
+
+        function warmthFor(current) {
+          switch (current) {
+            case 'intro':
+              return 0;
+            case 'opening':
+              return 1;
+            case 'dedication':
+            case 'prelude':
+              return 0.78;
+            case 'letter':
+              return 0.42;
+          }
+        }
+
+        function announceFor(current) {
+          switch (current) {
+            case 'intro':
+              return '';
+            case 'opening':
+              return 'Abriendo el regalo.';
+            case 'dedication':
+              return LETTER.dedication;
+            case 'prelude':
+              return LETTER.prelude;
+            case 'letter':
+              return 'Tu carta está lista.';
+          }
+        }
+
+        function showReveal(showPrelude) {
+          reveal.classList.remove('reveal--out');
+          reveal.hidden = false;
+          revealPrelude.hidden = !showPrelude;
+        }
+
+        function setPhase(next) {
+          phase = next;
+
+          var showingIntro = next === 'intro' || next === 'opening';
+
+          intro.hidden = !showingIntro;
+          intro.classList.toggle('intro--out', next === 'opening');
+          gift.classList.toggle('gift--opening', next !== 'intro');
+          warm.style.opacity = warmthFor(next);
+          announcement.textContent = announceFor(next);
+
+          if (next === 'dedication' || next === 'prelude') {
+            intro.hidden = true;
+            showReveal(next === 'prelude');
+            return;
+          }
+
+          if (next === 'letter') {
+            intro.hidden = true;
+            stage.classList.add('stage--letter');
+            letterLayer.hidden = false;
+            showReveal(false);
+            reveal.classList.add('reveal--out');
+            timers.push(
+              setTimeout(function () {
+                reveal.hidden = true;
+              }, 700),
+            );
+          }
+        }
+
+        function openGift() {
+          if (phase !== 'intro') {
+            return;
+          }
+
+          setPhase('opening');
+
+          var scale = reducedMotion ? REDUCED_MOTION_SCALE : 1;
+          TIMELINE.forEach(function (step) {
+            timers.push(setTimeout(function () {
+              setPhase(step.phase);
+            }, step.after * scale));
+          });
+        }
+
+        buildLetter();
+        buildMotes(MOTE_COUNT);
+        setPhase('intro');
+        openButton.addEventListener('click', openGift);
+
+        window.addEventListener('pagehide', function () {
+          timers.forEach(function (id) {
+            clearTimeout(id);
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
